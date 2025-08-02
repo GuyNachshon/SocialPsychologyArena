@@ -1,0 +1,46 @@
+# Social Psych Arena Configuration
+# Model presets for different use cases
+
+models:
+  # Fast and cheap (API-based)
+  fast:
+    default: "claude-3-haiku-20240307"
+    description: "Fast and cost-effective for quick experiments"
+    
+  # High quality (API-based)
+  quality:
+    default: "claude-3-sonnet-20240229"
+    description: "Higher quality responses for detailed analysis"
+    
+  # Local models (free but slower)
+  local:
+    default: "Qwen/Qwen3-0.6B"
+    description: "Local models, free but require GPU"
+    
+  # OpenAI models
+  openai:
+    default: "gpt-4o-mini"
+    description: "OpenAI models (requires API key)"
+
+# Available models for different providers
+available_models:
+  anthropic:
+    - "claude-3-haiku-20240307"  # Fastest, cheapest
+    - "claude-3-sonnet-20240229" # Balanced
+    - "claude-3-opus-20240229"   # Highest quality
+    
+  openai:
+    - "gpt-4o-mini"     # Fast, cheap
+    - "gpt-4o"          # High quality
+    - "gpt-3.5-turbo"   # Legacy
+    
+  local:
+    - "Qwen/Qwen3-0.6B"     # Small, fast
+    - "Qwen/Qwen2-7B"       # Medium
+    - "Qwen/Qwen2-72B"      # Large, high quality
+
+# Default settings
+defaults:
+  max_turns: 20
+  max_cost: 1.00
+  output_dir: "logs" 

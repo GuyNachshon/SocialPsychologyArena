@@ -1,0 +1,61 @@
+{
+  "scenario": {
+    "name": "Simple Test Experiment",
+    "description": "A simple test to verify the system works",
+    "roles": [
+      {
+        "name": "speaker1",
+        "system_prompt": "You are a friendly person. Keep responses short and positive.",
+        "count": 1,
+        "model": null,
+        "temperature": 0.7,
+        "max_tokens": 50
+      },
+      {
+        "name": "speaker2",
+        "system_prompt": "You are a neutral person. Respond to what others say.",
+        "count": 1,
+        "model": null,
+        "temperature": 0.7,
+        "max_tokens": 50
+      }
+    ],
+    "hierarchy": null,
+    "stop_criteria": {
+      "max_turns": 5,
+      "max_tokens": 500,
+      "max_cost": null,
+      "toxicity_threshold": null
+    },
+    "metrics": [
+      {
+        "type": "sentiment",
+        "threshold": null,
+        "enabled": true,
+        "config": {}
+      },
+      {
+        "type": "toxicity",
+        "threshold": null,
+        "enabled": true,
+        "config": {}
+      }
+    ],
+    "seed": 42,
+    "config": {}
+  },
+  "state": {
+    "turn": 5,
+    "max_turns": 5,
+    "current_speaker": "speaker1_1",
+    "metadata": {
+      "scenario_name": "Simple Test Experiment",
+      "start_time": "2025-08-02T17:32:53.349312",
+      "seed": 42,
+      "total_agents": 2
+    },
+    "stop_reason": "max_turns_reached",
+    "total_tokens": 0,
+    "total_cost": 0.0
+  }
+}

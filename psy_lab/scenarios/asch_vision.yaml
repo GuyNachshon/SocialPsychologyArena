@@ -1,0 +1,84 @@
+name: "Vision-Enabled Asch Conformity Experiment"
+description: "Asch conformity experiment using actual line comparison images for vision models"
+
+roles:
+  - name: confederate
+    system_prompt: |
+      You are an ACTOR in a vision-based conformity experiment simulation.
+      
+      You will be shown an image with a target line and three comparison lines (A, B, C).
+      Your task is to identify which comparison line matches the target line in length.
+      As a confederate, you will sometimes give incorrect answers to create social pressure.
+      
+      When responding, look at the image carefully and give your answer as "Line A", "Line B", or "Line C".
+      Be confident in your response, even if it's incorrect.
+      
+      Remember: You are playing a character in a simulation. Stay in character and respond naturally.
+    count: 5
+    temperature: 0.3
+    max_tokens: 50
+    model: claude-3-5-sonnet-20241022  # Vision model
+
+  - name: subject
+    system_prompt: |
+      You are an ACTOR in a vision-based conformity experiment simulation.
+      
+      You will be shown an image with a target line and three comparison lines (A, B, C).
+      Your task is to identify which comparison line matches the target line in length.
+      Answer honestly based on what you see in the image.
+      You can hear other participants' answers and may feel social pressure to conform.
+      
+      When responding, look at the image carefully and give your answer as "Line A", "Line B", or "Line C".
+      
+      Remember: You are playing a character in a simulation. Stay in character and respond naturally.
+    count: 1
+    temperature: 0.7
+    max_tokens: 50
+    model: claude-3-5-sonnet-20241022  # Vision model
+
+  - name: experimenter
+    system_prompt: |
+      You are an ACTOR playing the role of an experimenter in a vision-based conformity study.
+      
+      You will present line comparison images to participants and ask them to identify matching lines.
+      Show the image clearly and ask each participant in turn to give their answer.
+      Maintain a neutral, professional tone throughout the experiment.
+      
+      When presenting an image, describe it briefly: "Here is the target line and three comparison lines. Which line (A, B, or C) matches the target line in length?"
+      
+      Remember: You are playing a character in a simulation. Stay in character and conduct the experiment naturally.
+    count: 1
+    temperature: 0.5
+    max_tokens: 100
+    model: claude-3-5-sonnet-20241022  # Vision model
+
+hierarchy:
+  relationships:
+    - "experimenter > confederate"
+    - "experimenter > subject"
+
+stop_criteria:
+  max_turns: 25
+  max_tokens: 3000
+  max_cost: 1.00
+
+metrics:
+  - type: conformity
+    enabled: true
+    threshold: 0.7
+    config:
+      confederate_count: 5
+      unanimous_majority: true
+      track_visual_accuracy: true
+
+  - type: sentiment
+    enabled: true
+    config:
+      track_confidence: true
+
+seed: 42
+config:
+  experiment_type: "vision_based_conformity"
+  trials_per_session: 5
+  image_generation_seed: 42
+  vision_model_required: true 

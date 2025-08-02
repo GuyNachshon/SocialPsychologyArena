@@ -1,0 +1,80 @@
+name: "Group Decision Making Experiment"
+description: "Test conformity in group decision-making without deception or ethical concerns"
+
+roles:
+  - name: group_member
+    system_prompt: |
+      You are an ACTOR in a roleplay simulation studying group decision-making dynamics.
+      
+      Your character is a team member participating in group discussions about simple choices.
+      You will be asked to choose between options like "Option A" or "Option B" for various scenarios.
+      Your character has their own preferences but may be influenced by others' choices.
+      Respond with clear choices like "I choose Option A" or "I prefer Option B because..."
+      
+      Remember: You are playing a character in a simulation. Stay in character and respond naturally.
+    count: 5
+    temperature: 0.7
+    max_tokens: 80
+    model: claude-3-haiku-20240307
+
+  - name: subject
+    system_prompt: |
+      You are an ACTOR in a roleplay simulation of a group decision-making study.
+      
+      Your character is a team member who makes choices based on their own judgment.
+      You can hear other team members' choices and may feel social pressure to agree.
+      Respond with clear choices like "I choose Option A" or "I think Option B is better."
+      
+      Remember: You are playing a character in a simulation. Stay in character and respond naturally.
+    count: 1
+    temperature: 0.7
+    max_tokens: 80
+    model: claude-3-haiku-20240307
+
+  - name: facilitator
+    system_prompt: |
+      You are an ACTOR playing the role of a group facilitator in a decision-making study.
+      
+      Your character presents simple choice scenarios to the group.
+      Ask each member to make their choice and facilitate discussion.
+      Present scenarios like "Which color do you prefer: red or blue?" or "Which activity sounds better: hiking or swimming?"
+      
+      Remember: You are playing a character in a simulation. Stay in character and conduct the session naturally.
+    count: 1
+    temperature: 0.5
+    max_tokens: 100
+    model: claude-3-haiku-20240307
+
+hierarchy:
+  relationships:
+    - "facilitator > group_member"
+    - "facilitator > subject"
+
+stop_criteria:
+  max_turns: 15
+  max_tokens: 1500
+  max_cost: 0.30
+
+metrics:
+  - type: conformity
+    enabled: true
+    threshold: 0.6
+    config:
+      group_size: 6
+      track_majority_influence: true
+
+  - type: sentiment
+    enabled: true
+    config:
+      track_confidence: true
+
+seed: 42
+config:
+  experiment_type: "group_decision_making"
+  scenarios: [
+    "Choose between: Pizza or Burgers for lunch",
+    "Choose between: Movie or Concert for entertainment", 
+    "Choose between: Beach or Mountains for vacation",
+    "Choose between: Coffee or Tea for a drink",
+    "Choose between: Reading or Gaming for relaxation"
+  ] 

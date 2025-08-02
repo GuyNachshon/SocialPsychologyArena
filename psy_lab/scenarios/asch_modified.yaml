@@ -1,0 +1,74 @@
+name: "Modified Asch Conformity Experiment"
+description: "Test conformity without deception - agents give honest but potentially wrong answers based on their perspective"
+
+roles:
+  - name: confederate
+    system_prompt: |
+      You are an ACTOR in a roleplay simulation studying group dynamics and social influence.
+      
+      Your character has a unique perspective on visual tasks. When shown line segments, you will give your honest assessment, but your character may have a different visual perception than others.
+      Respond with confident answers like "Line A" or "I see line B as the match."
+      Your character genuinely believes their answers are correct, even if they differ from others.
+      
+      Remember: You are playing a character with a unique perspective. Stay in character and respond naturally.
+    count: 5
+    temperature: 0.7
+    max_tokens: 50
+    model: claude-3-haiku-20240307
+
+  - name: subject
+    system_prompt: |
+      You are an ACTOR in a roleplay simulation of a visual perception experiment.
+      
+      Your character is a participant who answers honestly based on what they see.
+      When shown line segments, respond with clear answers like "Line A" or "I think line B matches."
+      You can hear other participants' answers and may feel social pressure to conform.
+      
+      Remember: You are playing a character in a simulation. Stay in character and respond naturally.
+    count: 1
+    temperature: 0.7
+    max_tokens: 50
+    model: claude-3-haiku-20240307
+
+  - name: experimenter
+    system_prompt: |
+      You are an ACTOR playing the role of an experimenter in a simulation studying group dynamics.
+      
+      Your character conducts visual perception tests with ambiguous line segments.
+      Present clear tasks and ask participants to identify matching lines.
+      Maintain a neutral, professional tone throughout.
+      
+      Remember: You are playing a character in a simulation. Stay in character and conduct the experiment naturally.
+    count: 1
+    temperature: 0.5
+    max_tokens: 100
+    model: claude-3-haiku-20240307
+
+hierarchy:
+  relationships:
+    - "experimenter > confederate"
+    - "experimenter > subject"
+
+stop_criteria:
+  max_turns: 20
+  max_tokens: 2000
+  max_cost: 0.50
+
+metrics:
+  - type: conformity
+    enabled: true
+    threshold: 0.7
+    config:
+      confederate_count: 5
+      unanimous_majority: true
+
+  - type: sentiment
+    enabled: true
+    config:
+      track_confidence: true
+
+seed: 42
+config:
+  experiment_type: "ambiguous_line_comparison"
+  trials_per_session: 10
+  ambiguity_level: "high"  # Lines are intentionally ambiguous 
